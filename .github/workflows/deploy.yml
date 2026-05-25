@@ -28,8 +28,11 @@ jobs:
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
 
-    - name: Deploy to AKS
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    - name: Set KUBECONFIG
       run: |
+        echo "${{ secrets.KUBECONFIG }}" > kubeconfig
+
+    - name: Deploy to AKS
+      run: |
+        export KUBECONFIG=kubeconfig
         kubectl apply -f k8s/
