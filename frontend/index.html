@@ -10,7 +10,7 @@
 
   <script>
     async function callAPI() {
-      const res = await fetch('http://backend-service');
+      const res = await fetch('http://20.205.145.204');//http://backend-service
       const data = await res.text();
       document.getElementById('response').innerText = data;
     }
