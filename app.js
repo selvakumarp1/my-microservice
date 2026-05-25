@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send("✅ Hello from Kubernetes Microservice!");
+    res.send("✅ 🚀 CI/CD is working LIVE!");
 });
 
 app.get('/health', (req, res) => {
