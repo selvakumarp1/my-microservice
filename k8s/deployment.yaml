@@ -12,8 +12,9 @@ spec:
       labels:
         app: microservice
     spec:
-      containers:
-        - name: microservice
-          image: selvakumardocker/microservice:v1
-          ports:
-            - containerPort: 3000
+     containers:
+      - name: microservice
+        image: selvakumardocker/microservice:v2   ✅ (version updated)
+        imagePullPolicy: Always                  ✅ (ADD HERE)
+        ports:
+          - containerPort: 3000
