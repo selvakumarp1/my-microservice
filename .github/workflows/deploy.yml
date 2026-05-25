@@ -32,25 +32,32 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ github.run_number }} ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ github.run_number }}
 
-    # ✅ Step 4: Setup kubectl
+    # ✅ Step 4: Set KUBECONFIG
     - name: Set KUBECONFIG
       run: echo "${{ secrets.KUBECONFIG }}" > kubeconfig
 
-    # ✅ Step 5: Deploy to AKS (dynamic version replace)
+    # ✅ Step 5: Deploy to AKS (FIXED IMAGE REPLACEMENT ✅)
     - name: Deploy to AKS
       run: |
         export KUBECONFIG=kubeconfig
 
-        echo "Updating backend image version..."
-        sed -i "s|image: .*backend.*|image: ${{ secrets.DOCKER_USERNAME }}/backend:v${{ github.run_number }}|g" k8s/backend-deployment.yaml
+        echo "Updating backend image..."
+        sed -i "s|selvakumardocker/backend:.*|${{ secrets.DOCKER_USERNAME }}/backend:v${{ github.run_number }}|g" k8s/backend-deployment.yaml
 
-        echo "Updating frontend image version..."
-        sed -i "s|image: .*frontend.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ github.run_number }}|g" k8s/frontend-deployment.yaml
+        echo "Updating frontend image..."
+        sed -i "s|selvakumardocker/frontend:.*|${{ secrets.DOCKER_USERNAME }}/frontend:v${{ github.run_number }}|g" k8s/frontend-deployment.yaml
 
         echo "Applying Kubernetes manifests..."
         kubectl apply -f k8s/
 
-    # ✅ Step 6: Verify rollout (PRO LEVEL ✅)
+    # ✅ Step 6: Restart deployments (FORCE IMAGE PULL ✅)
+    - name: Restart deployments
+      run: |
+        export KUBECONFIG=kubeconfig
+        kubectl rollout restart deployment/backend-deployment
+        kubectl rollout restart deployment/frontend-deployment
+
+    # ✅ Step 7: Verify rollout (PRO LEVEL ✅)
     - name: Verify deployment rollout
       run: |
         export KUBECONFIG=kubeconfig
