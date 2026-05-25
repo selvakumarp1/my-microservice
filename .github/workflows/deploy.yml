@@ -22,7 +22,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/microservice:v2
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/microservice:v2 .
         docker push ${{ secrets.DOCKER_USERNAME }}/microservice:v2
 
     - name: Set up kubectl
