@@ -3,18 +3,25 @@ const cors = require('cors');
 
 const app = express();
 
+// ✅ Enable CORS (good practice, though ingress makes it less critical)
 app.use(cors());
 
-//  root route
+// ✅ Health check (VERY IMPORTANT for Kubernetes stability)
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
+// ✅ Root route
 app.get('/', (req, res) => {
-  res.send(" Hello from Kubernetes Microservice!");
+  res.send("✅ Hello from Kubernetes Microservice!");
 });
 
-//  API route (THIS FIXES YOUR ISSUE)
+// ✅ API route (IMPORTANT for Ingress /api)
 app.get('/api', (req, res) => {
-  res.send(" Hello from Kubernetes Microservice!");
+  res.send("✅ Hello from Kubernetes Microservice!");
 });
 
+// ✅ Start server
 app.listen(3000, () => {
-  console.log("Server running on port 3000");
+  console.log("✅ Server running on port 3000");
 });
