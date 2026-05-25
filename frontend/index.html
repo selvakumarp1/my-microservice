@@ -5,14 +5,19 @@
 </head>
 <body>
   <h1>Frontend UI</h1>
-  <button onclick="callAPI()">Call Backend Now</button>
+  <button onclick="callAPI()">Call Backend</button>
   <p id="response"></p>
 
   <script>
     async function callAPI() {
-      const res = await fetch('http://20.205.145.204:80');
-      const data = await res.text();
-      document.getElementById('response').innerText = data;
+      try {
+        const res = await fetch('http://backend-service.default.svc.cluster.local');
+        const data = await res.text();
+        document.getElementById('response').innerText = data;
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById('response').innerText = "❌ Failed to call backend";
+      }
     }
   </script>
 </body>
