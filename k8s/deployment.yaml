@@ -14,7 +14,7 @@ spec:
     spec:
      containers:
       - name: microservice
-        image: selvakumardocker/microservice:v2
+        image: selvakumardocker/microservice:v3
         imagePullPolicy: Always
         ports:
           - containerPort: 3000

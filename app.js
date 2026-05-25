@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send("🔥 Version v2 deployed!");
+    res.send("🔥 WOW...   Version v3 deployed, with CI-CD auto deployment!");
 });
 
 app.get('/health', (req, res) => {
