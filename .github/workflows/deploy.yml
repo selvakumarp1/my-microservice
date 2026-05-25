@@ -1,4 +1,3 @@
-
 name: Deploy to AKS
 
 on:
@@ -22,17 +21,14 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/microservice:v3 .
-        docker push ${{ secrets.DOCKER_USERNAME }}/microservice:v3
-
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/microservice:v${{ github.run_number }} .
+        docker push ${{ secrets.DOCKER_USERNAME }}/microservice:v${{ github.run_number }}
 
     - name: Set KUBECONFIG
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" > kubeconfig
+      run: echo "${{ secrets.KUBECONFIG }}" > kubeconfig
 
     - name: Deploy to AKS
       run: |
         export KUBECONFIG=kubeconfig
+        sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/microservice:v${{ github.run_number }}|g" k8s/deployment.yaml
         kubectl apply -f k8s/
