@@ -13,12 +13,12 @@ app.get('/health', (req, res) => {
 
 // ✅ Root route
 app.get('/', (req, res) => {
-  res.send("✅ Hello from Kubernetes Microservice!");
+  res.send("✅ WOW, Hello from Kubernetes Microservice!");
 });
 
 // ✅ API route (IMPORTANT for Ingress /api)
 app.get('/api', (req, res) => {
-  res.send("✅ Hello from Kubernetes Microservice!");
+  res.send(process.env.APP_MESSAGE);
 });
 
 // ✅ Start server

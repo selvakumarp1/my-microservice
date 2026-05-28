@@ -1,0 +1,24 @@
+backend:
+  image: selvakumardocker/backend:v27
+  replicas: 1
+  secretName: backend-secret
+
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+frontend:
+  image: selvakumardocker/frontend:v25
+  replicas: 1
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
