@@ -3,17 +3,15 @@ const app = express();
 
 const PORT = 3000;
 
-// ✅ Root route (optional test)
 app.get('/', (req, res) => {
   res.send("✅ Backend is running!");
 });
 
-// ✅ API route (used by frontend)
 app.get('/api', (req, res) => {
   res.send(process.env.APP_MESSAGE || "Default Message");
 });
 
-// ✅ Start server
-app.listen(PORT, () => {
+// ✅ CRITICAL FIX HERE
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Backend running on port ${PORT}`);
 });
