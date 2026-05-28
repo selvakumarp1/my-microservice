@@ -1,5 +1,5 @@
 backend:
-  replicas: 2   # ✅ keep 1 (your cluster is small)
+  replicas: 2
   image: selvakumardocker/backend:latest
 
   resources:
@@ -21,4 +21,3 @@ frontend:
     limits:
       cpu: "200m"
       memory: "128Mi"
-``
