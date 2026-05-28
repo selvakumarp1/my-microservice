@@ -54,10 +54,10 @@ jobs:
     # ✅ Deploy using Helm (PRO LEVEL ✅🔥)
     - name: Helm upgrade
       run: |
-          helm upgrade myapp ./my-microservice-chart \
-          --install \
-          --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
-          --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
+        helm upgrade myapp ./my-microservice-chart \
+        --install \
+        --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
+        --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
     # ✅ Verify rollout
     - name: Verify deployment
