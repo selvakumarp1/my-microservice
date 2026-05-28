@@ -47,10 +47,23 @@ jobs:
     - name: Install Helm
       uses: azure/setup-helm@v3
 
-    - name: Helm upgrade
+    #  Deploy to DEV
+    - name: Deploy to DEV
+      if: github.ref == 'refs/heads/dev'
       run: |
-        helm upgrade myapp ./my-microservice-chart \
+        helm upgrade myapp-dev ./my-microservice-chart \
           --install \
+          -f my-microservice-chart/values-dev.yaml \
+          --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
+          --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
+
+    # Deploy to PROD
+    - name: Deploy to PROD
+      if: github.ref == 'refs/heads/main'
+      run: |
+        helm upgrade myapp-prod ./my-microservice-chart \
+          --install \
+          -f my-microservice-chart/values-prod.yaml \
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
