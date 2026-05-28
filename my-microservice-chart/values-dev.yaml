@@ -21,3 +21,6 @@ frontend:
     limits:
       cpu: "200m"
       memory: "128Mi"
+      
+ingress:
+  host: dev.4.145.30.98.nip.io 
