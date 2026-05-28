@@ -31,3 +31,8 @@ spec:
           limits:
             cpu: {{ .Values.frontend.resources.limits.cpu }}
             memory: {{ .Values.frontend.resources.limits.memory }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0
