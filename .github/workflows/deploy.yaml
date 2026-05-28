@@ -80,14 +80,14 @@ jobs:
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
-    # ✅ 11. Verify DEV
+    # ✅ Verify DEV deployment
     - name: Verify DEV deployment
       if: github.ref == 'refs/heads/dev'
       run: |
         kubectl rollout status deployment/backend-deployment -n dev --timeout=120s
         kubectl rollout status deployment/frontend-deployment -n dev --timeout=120s
-
-    # ✅ 12. Verify PROD
+    
+    # ✅ Verify PROD deployment
     - name: Verify PROD deployment
       if: github.ref == 'refs/heads/main'
       run: |
