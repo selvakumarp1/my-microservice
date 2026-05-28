@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 // ✅ API route (IMPORTANT for Ingress /api)
 app.get('/api', (req, res) => {
-  res.send("🔥🧪 DEV ENVIRONMENT 🚀 🚀");
+  res.send("🔥🧪 EV ENVIRONMENT 🚀 🚀");
 });
 
 // ✅ Start server
