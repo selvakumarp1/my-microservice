@@ -44,7 +44,8 @@ jobs:
     - name: Configure kubeconfig
       run: |
         echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig
-        export KUBECONFIG=$PWD/kubeconfig
+    - name: Set KUBECONFIG env
+      run: echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV   
 
     # ✅ Install Helm
     - name: Install Helm
