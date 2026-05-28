@@ -14,41 +14,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # ✅ 1. Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # ✅ 2. Login to Docker Hub
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    # ✅ 3. Build & Push Backend
     - name: Build and push backend
       run: |
         docker build -t $DOCKER_USERNAME/backend:v${{ github.run_number }} ./backend
         docker push $DOCKER_USERNAME/backend:v${{ github.run_number }}
 
+    # ✅ 4. Build & Push Frontend
     - name: Build and push frontend
       run: |
         docker build -t $DOCKER_USERNAME/frontend:v${{ github.run_number }} ./frontend
         docker push $DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
+    # ✅ 5. Azure Login
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    # ✅ 6. Install kubectl
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
 
+    # ✅ 7. Get AKS credentials
     - name: Get AKS credentials
       run: |
         az aks get-credentials --resource-group myRG --name myAKSClusterNP --overwrite-existing
 
+    # ✅ 8. Install Helm
     - name: Install Helm
       uses: azure/setup-helm@v3
 
-    #  Deploy to DEV
+    # ✅ 9. Deploy to DEV
     - name: Deploy to DEV
       if: github.ref == 'refs/heads/dev'
       run: |
@@ -60,7 +68,7 @@ jobs:
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
-    # Deploy to PROD
+    # ✅ 10. Deploy to PROD
     - name: Deploy to PROD
       if: github.ref == 'refs/heads/main'
       run: |
@@ -72,9 +80,16 @@ jobs:
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
 
-    # ✅ IMPORTANT: NO FORCE DELETE NOW (Recreate strategy handles it)
-
-    - name: Verify deployment
+    # ✅ 11. Verify DEV
+    - name: Verify DEV deployment
+      if: github.ref == 'refs/heads/dev'
       run: |
-        kubectl rollout status deployment/backend-deployment --timeout=120s
-        kubectl rollout status deployment/frontend-deployment --timeout=120s
+        kubectl rollout status deployment/backend-deployment -n dev --timeout=120s
+        kubectl rollout status deployment/frontend-deployment -n dev --timeout=120s
+
+    # ✅ 12. Verify PROD
+    - name: Verify PROD deployment
+      if: github.ref == 'refs/heads/main'
+      run: |
+        kubectl rollout status deployment/backend-deployment -n prod --timeout=120s
+        kubectl rollout status deployment/frontend-deployment -n prod --timeout=120s
