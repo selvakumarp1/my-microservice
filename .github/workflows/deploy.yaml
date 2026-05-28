@@ -54,6 +54,8 @@ jobs:
       run: |
         helm upgrade myapp-dev ./my-microservice-chart \
           --install \
+          --namespace dev \
+          --create-namespace \
           -f my-microservice-chart/values-dev.yaml \
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
@@ -64,6 +66,8 @@ jobs:
       run: |
         helm upgrade myapp-prod ./my-microservice-chart \
           --install \
+          --namespace prod \
+          --create-namespace \
           -f my-microservice-chart/values-prod.yaml \
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
