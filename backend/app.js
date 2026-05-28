@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 // ✅ API route (IMPORTANT for Ingress /api)
 app.get('/api', (req, res) => {
-  res.send(process.env.APP_MESSAGE);
+  res.send("🔥 CI/CD WORKING v2 🚀");
 });
 
 // ✅ Start server
