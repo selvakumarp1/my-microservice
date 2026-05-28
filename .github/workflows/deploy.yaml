@@ -54,9 +54,7 @@ jobs:
     # ✅ Deploy using Helm (PRO LEVEL ✅🔥)
     - name: Helm upgrade
       run: |
-        export KUBECONFIG=$PWD/kubeconfig
-
-        helm upgrade myapp ./my-microservice-chart \
+          helm upgrade myapp ./my-microservice-chart \
           --install \
           --set backend.image=$DOCKER_USERNAME/backend:v${{ github.run_number }} \
           --set frontend.image=$DOCKER_USERNAME/frontend:v${{ github.run_number }}
