@@ -9,11 +9,11 @@ spec:
       app: backend
 
   policyTypes:
-  - Ingress
+    - Ingress
+    - Egress   # ✅ IMPORTANT FIX
 
   ingress:
-  # ✅ Allow traffic from frontend pods
-  - from:
-    - podSelector:
-        matchLabels:
-          app: frontend
+    - {}       # ✅ allow all incoming
+
+  egress:
+    - {}       # ✅ allow all outgoing
