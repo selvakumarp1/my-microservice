@@ -3,17 +3,22 @@ kind: Ingress
 metadata:
   name: myapp-ingress
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
 spec:
   ingressClassName: nginx
+
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: tls-secret
 
   rules:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
 
-          # ✅ Frontend
           - path: /
             pathType: Prefix
             backend:
@@ -22,7 +27,6 @@ spec:
                 port:
                   number: 80
 
-          # ✅ Backend API
           - path: /api
             pathType: Prefix
             backend:
